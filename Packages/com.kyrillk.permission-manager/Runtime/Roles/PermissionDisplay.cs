@@ -1,6 +1,4 @@
-﻿
-using System.Runtime.Serialization;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -27,7 +25,7 @@ namespace PermissionSystem
         private void UpdateDisplay()
         {
             if (displayObject == null || role == null || text == null) return;
-            string[] members = role.GetMembers(); 
+            string[] members = role.GetMembers();
 
             var sb = new StringBuilder();
             foreach (string member in members)
