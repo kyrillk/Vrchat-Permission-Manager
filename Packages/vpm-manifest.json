@@ -1,0 +1,111 @@
+{
+  "dependencies": {
+    "com.vrchat.core.vpm-resolver": {
+      "version": "0.1.29"
+    },
+    "com.udonvr.disbridge": {
+      "version": "3.0.0-beta.56"
+    },
+    "dev.architech.protv": {
+      "version": "3.0.0-beta.29.4"
+    },
+    "com.udonvr.disbridge.plugin.protv": {
+      "version": "1.2.0"
+    },
+    "com.vrchat.base": {
+      "version": "3.10.1"
+    },
+    "com.vrchat.worlds": {
+      "version": "3.10.1"
+    },
+    "chirp.reava.uwutils": {
+      "version": "1.0.0-pre.10"
+    },
+    "dev.architech.videoplayershim": {
+      "version": "1.5.0"
+    },
+    "com.llealloo.audiolink": {
+      "version": "2.1.0"
+    },
+    "chirp.reava.portableworldmenu": {
+      "version": "0.4.0-pre.1"
+    },
+    "com.vrclinking.vrclinking-sdk": {
+      "version": "0.1.4"
+    }
+  },
+  "locked": {
+    "com.vrchat.core.vpm-resolver": {
+      "version": "0.1.29",
+      "dependencies": {}
+    },
+    "com.varneon.vudon.logger": {
+      "version": "0.4.0-alpha.5",
+      "dependencies": {
+        "com.vrchat.worlds": ">=3.4.0 <4.0.0",
+        "com.varneon.vudon.editors": ">=0.1.0-alpha.8 <0.2.0"
+      }
+    },
+    "com.varneon.vudon.editors": {
+      "version": "0.1.0-alpha.8",
+      "dependencies": {}
+    },
+    "com.udonvr.disbridge": {
+      "version": "3.0.0-beta.56",
+      "dependencies": {}
+    },
+    "dev.architech.protv": {
+      "version": "3.0.0-beta.29.4",
+      "dependencies": {
+        "com.vrchat.worlds": "^3.4",
+        "dev.architech.sdk": ">=0.21.3 <1"
+      }
+    },
+    "dev.architech.sdk": {
+      "version": "0.22.0",
+      "dependencies": {
+        "com.vrchat.worlds": "^3.4"
+      }
+    },
+    "com.udonvr.disbridge.plugin.protv": {
+      "version": "1.2.0",
+      "dependencies": {}
+    },
+    "com.vrchat.base": {
+      "version": "3.10.1",
+      "dependencies": {}
+    },
+    "com.vrchat.worlds": {
+      "version": "3.10.1",
+      "dependencies": {
+        "com.vrchat.base": "3.10.1"
+      }
+    },
+    "chirp.reava.uwutils": {
+      "version": "1.0.0-pre.10",
+      "dependencies": {
+        "com.vrchat.worlds": ">=3.7.4"
+      }
+    },
+    "dev.architech.videoplayershim": {
+      "version": "1.5.0",
+      "dependencies": {
+        "com.vrchat.worlds": "^3.3"
+      }
+    },
+    "com.llealloo.audiolink": {
+      "version": "2.1.0",
+      "dependencies": {}
+    },
+    "chirp.reava.portableworldmenu": {
+      "version": "0.4.0-pre.1",
+      "dependencies": {
+        "com.vrchat.worlds": ">=3.7.4"
+      }
+    },
+    "com.vrclinking.vrclinking-sdk": {
+      "version": "0.1.4",
+      "dependencies": {}
+    }
+  }
+}
