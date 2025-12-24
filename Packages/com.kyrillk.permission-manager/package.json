@@ -1,8 +1,8 @@
 {
   "name": "com.kyrillk.permission-manager",
-  "displayName": "permission-manager",
-  "version": "0.0.2",
-  "description": "Describe this Package",
+  "displayName": "PermissionManager",
+  "version": "0.0.3",
+  "description": "A system to manage permission with VRC Linking",
   "gitDependencies": {},
   "vpmDependencies": {
     "com.vrchat.worlds": "3.10.1"

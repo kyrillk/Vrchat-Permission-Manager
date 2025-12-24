@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PlayerListMenu
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: c9c787d1140b7c54a9e84ec5f681f816,
-    type: 2}
+  serializedUdonProgramAsset: {fileID: 11400000, guid: cfda07989de0ec1469e66bf2e2b3a923, type: 2}
   udonAssembly: 
   assemblyError: 
   sourceCsScript: {fileID: 11500000, guid: 17c08679825d5bc40a78faad48fb5008, type: 3}
@@ -62,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.PermissionsManager, Assembly-CSharp
+      Data: PermissionSystem.PermissionsManager, PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 

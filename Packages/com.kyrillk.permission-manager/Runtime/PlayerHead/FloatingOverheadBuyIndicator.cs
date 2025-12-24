@@ -11,6 +11,8 @@ namespace PermissionSystem
     /// Extends PermissionContainerBase to use permission checking for showing indicators.
     /// Only players who are members of the required permissions will have an indicator displayed.
     /// </summary>
+
+    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class FloatingOverheadBuyIndicator : PermissionContainerBase
     {
         [Tooltip("The tag to assign to players when they join.")]
@@ -44,6 +46,29 @@ namespace PermissionSystem
             _playerIndicatorDataDictionary = new DataDictionary();
         }
 
+        public override void _Start()
+        {
+            if (RequiredMembership == null || RequiredMembership.Length == 0)
+            {
+                Debug.LogWarning("FloatingOverheadBuyIndicator: No required membership set. The indicator will be shown for all players.");
+                return;
+            }
+            else
+            {
+                foreach (PermissionContainer membership in RequiredMembership)
+                {
+                    membership.AddUpdateListener(this);
+                }
+            }
+
+            UpdatePlayerTag();
+        }
+
+        public override void PermissionsUpdate()
+        {
+            UpdatePlayerTag();
+        }
+
         // When a player joins, add an indicator above them if they have required permissions
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
@@ -64,7 +89,7 @@ namespace PermissionSystem
             }
         }
 
-        public override void _Update()
+        public void UpdatePlayerTag()
         {
             // Check all players to see if they should have indicators (in case permissions change during the session)
             var playersCount = new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()];

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: Role
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 072b376182fd4544b9a608dccf608ab1,
-    type: 2}
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 76f1f98fd468807488131af2bfaf1cbd, type: 2}
   udonAssembly: 
   assemblyError: 
   sourceCsScript: {fileID: 11500000, guid: 1a4ca2edd779b65468bb25ba10d189b1, type: 3}
@@ -62,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.PermissionsManager, Assembly-CSharp
+      Data: PermissionSystem.PermissionsManager, PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 
@@ -146,7 +145,7 @@ MonoBehaviour:
       Data: 10|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.PermissionContainer[], Assembly-CSharp
+      Data: PermissionSystem.PermissionContainer[], PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 
@@ -285,7 +284,7 @@ MonoBehaviour:
       Data: 20|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.PermissionContainerBase[], Assembly-CSharp
+      Data: PermissionSystem.PermissionContainerBase[], PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 

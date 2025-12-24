@@ -1,6 +1,4 @@
-﻿
-using System.Net;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -17,15 +15,9 @@ namespace PermissionSystem
         [HideInInspector]  public PermissionContainer[] Permissions;
         [SerializeField] public PermissionContainerBase[] AllContainers;
         [SerializeField] private PermissionLoader permissionLoader;
-        public Logger logger;
     
         void Start()
         {
-            if (logger == null)
-            {
-                logger = GetComponent<Logger>();
-            }
-
             Permissions = Utils.mergePermissionContainerBaseArrays(Roles, Groups);
 
             foreach (PermissionContainer permission in Permissions)

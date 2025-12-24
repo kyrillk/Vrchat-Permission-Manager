@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: MenuTabButton
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: f90ee7586ad9dc5469d6b42c693bbcfa,
-    type: 2}
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 6e583d9af5634524eb381b0f44ea8404, type: 2}
   udonAssembly: 
   assemblyError: 
   sourceCsScript: {fileID: 11500000, guid: 76bb2f4959a38624eb5cddf355a25ab6, type: 3}
@@ -62,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionsManager.UI.MenuSystem, Assembly-CSharp
+      Data: PermissionsManager.UI.MenuSystem, PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 

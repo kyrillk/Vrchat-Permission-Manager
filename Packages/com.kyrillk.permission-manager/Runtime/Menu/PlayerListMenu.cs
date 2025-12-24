@@ -33,6 +33,11 @@ namespace PermissionSystem.UI
 
         public void UpdatePlayerList()
         {
+            if (playerListParent == null || playerNamePrefab == null)
+            {
+                Debug.LogWarning("PlayerListMenu: playerListParent or playerNamePrefab is not assigned.");
+                return;
+            }
             // Clear old UI entries
             for (int i = playerListParent.childCount - 1; i >= 0; i--)
             {

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PermissionLoaderVrcLinking
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: b28fbd25e0e9cb847a04826c26210ed4,
-    type: 2}
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 889c81333307bbf46820f1fc8390071f, type: 2}
   udonAssembly: 
   assemblyError: 
   sourceCsScript: {fileID: 11500000, guid: 410883fdbd228c74888d80f21ae5c31b, type: 3}
@@ -62,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.PermissionsManager, Assembly-CSharp
+      Data: PermissionSystem.PermissionsManager, PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 
@@ -212,7 +211,7 @@ MonoBehaviour:
       Data: 14|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PermissionSystem.Role[], Assembly-CSharp
+      Data: PermissionSystem.Role[], PermissionManager.Runtime
     - Name: 
       Entry: 8
       Data: 
