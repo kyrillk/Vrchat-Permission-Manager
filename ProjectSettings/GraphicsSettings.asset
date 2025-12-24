@@ -3,7 +3,11 @@
 --- !u!30 &1
 GraphicsSettings:
   m_ObjectHideFlags: 0
+<<<<<<< HEAD
   serializedVersion: 15
+=======
+  serializedVersion: 13
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
   m_Deferred:
     m_Mode: 1
     m_Shader: {fileID: 69, guid: 0000000000000000f000000000000000, type: 0}
@@ -13,6 +17,12 @@ GraphicsSettings:
   m_ScreenSpaceShadows:
     m_Mode: 1
     m_Shader: {fileID: 64, guid: 0000000000000000f000000000000000, type: 0}
+<<<<<<< HEAD
+=======
+  m_LegacyDeferred:
+    m_Mode: 1
+    m_Shader: {fileID: 63, guid: 0000000000000000f000000000000000, type: 0}
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
   m_DepthNormals:
     m_Mode: 1
     m_Shader: {fileID: 62, guid: 0000000000000000f000000000000000, type: 0}
@@ -25,10 +35,21 @@ GraphicsSettings:
   m_LensFlare:
     m_Mode: 1
     m_Shader: {fileID: 102, guid: 0000000000000000f000000000000000, type: 0}
+<<<<<<< HEAD
   m_VideoShadersIncludeMode: 2
   m_AlwaysIncludedShaders: []
   m_PreloadedShaders: []
   m_PreloadShadersBatchTimeLimit: -1
+=======
+  m_AlwaysIncludedShaders:
+  - {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 15104, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 15105, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 15106, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_PreloadedShaders: []
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
   m_SpritesDefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000,
     type: 0}
   m_CustomRenderPipeline: {fileID: 0}
@@ -40,7 +61,10 @@ GraphicsSettings:
   m_LightmapStripping: 0
   m_FogStripping: 0
   m_InstancingStripping: 0
+<<<<<<< HEAD
   m_BrgStripping: 0
+=======
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
   m_LightmapKeepPlain: 1
   m_LightmapKeepDirCombined: 1
   m_LightmapKeepDynamicPlain: 1
@@ -51,6 +75,7 @@ GraphicsSettings:
   m_FogKeepExp: 1
   m_FogKeepExp2: 1
   m_AlbedoSwatchInfos: []
+<<<<<<< HEAD
   m_LightsUseLinearIntensity: 1
   m_LightsUseColorTemperature: 1
   m_DefaultRenderingLayerMask: 1
@@ -59,3 +84,9 @@ GraphicsSettings:
   m_LightProbeOutsideHullStrategy: 0
   m_CameraRelativeLightCulling: 0
   m_CameraRelativeShadowCulling: 0
+=======
+  m_LightsUseLinearIntensity: 0
+  m_LightsUseColorTemperature: 0
+  m_LogWhenShaderIsCompiled: 0
+  m_AllowEnlightenSupportForUpgradedProject: 0
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a

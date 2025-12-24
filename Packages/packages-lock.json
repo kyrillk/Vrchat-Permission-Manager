@@ -1,5 +1,6 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "chirp.reava.portableworldmenu": {
       "version": "file:chirp.reava.portableworldmenu",
       "depth": 0,
@@ -41,12 +42,18 @@
     "com.unity.ai.navigation": {
       "version": "1.1.5",
       "depth": 1,
+=======
+    "com.unity.ai.navigation": {
+      "version": "1.1.5",
+      "depth": 0,
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
       "source": "registry",
       "dependencies": {
         "com.unity.modules.ai": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,
@@ -77,6 +84,8 @@
       },
       "url": "https://packages.unity.com"
     },
+=======
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
@@ -85,7 +94,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
+<<<<<<< HEAD
       "version": "3.0.26",
+=======
+      "version": "3.0.28",
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -109,6 +122,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.inputsystem": {
       "version": "1.7.0",
       "depth": 1,
@@ -132,6 +146,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+=======
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.1",
       "depth": 1,
@@ -139,6 +155,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.postprocessing": {
       "version": "3.4.0",
       "depth": 1,
@@ -151,6 +168,11 @@
     "com.unity.test-framework": {
       "version": "1.1.33",
       "depth": 1,
+=======
+    "com.unity.test-framework": {
+      "version": "1.1.33",
+      "depth": 0,
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
       "source": "registry",
       "dependencies": {
         "com.unity.ext.nunit": "1.0.6",
@@ -161,7 +183,11 @@
     },
     "com.unity.textmeshpro": {
       "version": "3.0.6",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 0,
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0"
@@ -170,12 +196,21 @@
     },
     "com.unity.timeline": {
       "version": "1.7.6",
+<<<<<<< HEAD
       "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
+=======
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.director": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
@@ -189,6 +224,7 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+<<<<<<< HEAD
     "com.unity.xr.legacyinputhelpers": {
       "version": "2.1.10",
       "depth": 2,
@@ -251,6 +287,8 @@
         "com.unity.ugui": "1.0.0"
       }
     },
+=======
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
     "com.vrchat.core.bootstrap": {
       "version": "file:com.vrchat.core.bootstrap",
       "depth": 0,
@@ -259,6 +297,7 @@
         "com.unity.nuget.newtonsoft-json": "2.0.2"
       }
     },
+<<<<<<< HEAD
     "com.vrchat.core.vpm-resolver": {
       "version": "file:com.vrchat.core.vpm-resolver",
       "depth": 0,
@@ -298,6 +337,10 @@
     },
     "dev.architech.videoplayershim": {
       "version": "file:dev.architech.videoplayershim",
+=======
+    "com.vrchat.demo-template": {
+      "version": "file:com.vrchat.demo-template",
+>>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
