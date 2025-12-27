@@ -12,7 +12,7 @@ namespace PermissionSystem
     {
         [Header("Display Settings")]
         [SerializeField] private GameObject displayObject;
-        [SerializeField] private Role role;
+        [SerializeField] private PermissionContainer role;
         [SerializeField] private TextMeshProUGUI text;
         protected override string Prefix => "PermissionDisplay " + (role != null ? $"({role.permissionName})" : "");
 

@@ -31,7 +31,7 @@ namespace PermissionSystem.Loader
             LoadData();
         }
 
-        private void LoadData()
+        public void LoadData()
         {
             if (downloader == null)
             {
