@@ -57,6 +57,11 @@ namespace PermissionSystem.UI
         {
             if (manager == null) return;
             addingRole = manager.GetRoleByName(roleName);
+            if (addingRole == null)
+            {
+                logWarning("RoleHandler could not find role: " + roleName);
+                return;
+            }
             logInfo("Setting up RoleHandler for role: " + roleName);
             addToListeners();
             updateRoleStatus();

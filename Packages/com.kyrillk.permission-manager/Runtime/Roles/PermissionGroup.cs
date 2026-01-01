@@ -15,22 +15,22 @@ namespace PermissionSystem
     public class PermissionGroup : PermissionContainer
     {
         [Tooltip("Array of roles that make up this permission group")]
-        Role[] roles;
 
         public override void _Start()
         {
-            if (roles == null || roles.Length == 0)
-            {
+            if (RequiredMembership == null || RequiredMembership.Length == 0) {
                 logWarning($"PermissionGroup '{permissionName}' has no roles assigned.");
+                return;
+            }
 
-                foreach (Role role in roles)
+
+            foreach (Role role in RequiredMembership)
+            {
+                if (role.manager == null)
                 {
-                    if (role.manager == null)
-                    {
-                        role.SetManager(manager);
-                    }
-                    role.AddUpdateListener(this);
+                    role.SetManager(manager);
                 }
+                role.AddUpdateListener(this);
             }
         }
 
@@ -41,7 +41,9 @@ namespace PermissionSystem
         /// <returns>True if the player is a member of at least one role in the group</returns>
         public override bool IsMember(string playerName)
         {
-            foreach (Role role in roles)
+            if (RequiredMembership == null || RequiredMembership.Length == 0) return false;
+            
+            foreach (Role role in RequiredMembership)
             {
                 if (role.IsMember(playerName))
                 {
@@ -57,7 +59,9 @@ namespace PermissionSystem
         /// <returns>True if the local player is a member of at least one role in the group</returns>
         public override bool IsMember()
         {
-            foreach (Role role in roles)
+            if (RequiredMembership == null || RequiredMembership.Length == 0) return false;
+            
+            foreach (Role role in RequiredMembership)
             {
                 if (role.IsMember())
                 {
@@ -73,10 +77,12 @@ namespace PermissionSystem
         /// <returns>Array of unique player display names who are members of any role in the group</returns>
         public override string[] GetMembers()
         {
+            if (RequiredMembership == null || RequiredMembership.Length == 0) return new string[0];
+            
             // Temporary list to store unique members
             string[] tempMembers = new string[0];
 
-            foreach (Role role in roles)
+            foreach (Role role in RequiredMembership)
             {
                 string[] roleMembers = role.GetMembers();
                 if (roleMembers == null) continue;
@@ -103,7 +109,6 @@ namespace PermissionSystem
                     }
                 }
             }
-
             return tempMembers;
         }        
     }

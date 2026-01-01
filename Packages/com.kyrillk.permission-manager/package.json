@@ -1,7 +1,11 @@
 {
   "name": "com.kyrillk.permission-manager",
   "displayName": "PermissionManager",
+<<<<<<< Updated upstream
   "version": "0.0.4",
+=======
+  "version": "0.0.5",
+>>>>>>> Stashed changes
   "description": "A system to manage permission with VRC Linking",
   "gitDependencies": {},
   "vpmDependencies": {
