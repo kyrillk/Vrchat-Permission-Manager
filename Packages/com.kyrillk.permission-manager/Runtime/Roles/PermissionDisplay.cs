@@ -1,30 +1,34 @@
-﻿using UdonSharp;
+﻿﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using TMPro;
 using System.Text;
+using PermissionSystem.Core;
 
 namespace PermissionSystem
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class PermissionDisplay : PermissionContainerBase
+    public class PermissionDisplay : PermissionAwareBehaviour
     {
         [Header("Display Settings")]
-        [SerializeField] private GameObject displayObject;
-        [SerializeField] private PermissionContainer role;
+        [SerializeField] private PermissionContainerBase role;
         [SerializeField] private TextMeshProUGUI text;
-        protected override string Prefix => "PermissionDisplay " + (role != null ? $"({role.permissionName})" : "");
+        
+        //protected PermissionContainerBase[] requiredPermissions;        
 
-        public override void _Start()
+        protected override void OnManagedStart()
         {
             UpdateDisplay();
-            role.AddUpdateListener(this);
+            if (role != null)
+            {
+                role.AddUpdateListener(this);
+            }
         }
 
         private void UpdateDisplay()
         {
-            if (displayObject == null || role == null || text == null) return;
+            if (role == null || text == null) return;
             string[] members = role.GetMembers();
 
             var sb = new StringBuilder();
@@ -35,10 +39,10 @@ namespace PermissionSystem
 
             text.text = sb.ToString();
 
-            logInfo($"Updated role '{role.name}' — Members: {role.GetMemberCount()}");
+            LogInfo($"Updated role '{role.permissionName}' — Members: {role.GetMemberCount()}");
         }
 
-        public override void PermissionsUpdate()
+        public override void OnPermissionsUpdated()
         {
             UpdateDisplay();
         }

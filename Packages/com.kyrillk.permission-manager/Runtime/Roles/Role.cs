@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -12,7 +11,7 @@ namespace PermissionSystem
     /// Extends PermissionContainer to provide member management functionality.
     /// </summary>
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-    public class Role : PermissionContainer
+    public class Role : Core.PermissionContainerBase
     {
         [Tooltip("Display color for this role in UI elements")]
         public Color32 roleColor = new Color32(52,152,219,255);
@@ -70,10 +69,10 @@ namespace PermissionSystem
             }
 
             members = Utils.AddToStringArray(members, playerName);
-            PermissionsUpdate();
+            NotifyPermissionsUpdated();
 
-            Sync();
-            logInfo("Adding member " + playerName + " to role " + permissionName);
+            SyncBehaviour();
+            LogInfo("Adding member " + playerName + " to role " + permissionName);
         }
         
         /// <summary>
@@ -83,10 +82,10 @@ namespace PermissionSystem
         public void removeMember(string playerName)
         {
             members = Utils.RemoveFromStringArray(members, playerName);
-            PermissionsUpdate();
+            NotifyPermissionsUpdated();
 
-            Sync();
-            logInfo("Removing member " + playerName + " from role " + permissionName);
+            SyncBehaviour();
+            LogInfo("Removing member " + playerName + " from role " + permissionName);
         }
 
         /// <summary>
@@ -95,10 +94,25 @@ namespace PermissionSystem
         /// <returns>Array of player display names who are members</returns>
         public override string[] GetMembers()
         {
+            if (assignDefault)
+            {
+                int count = VRCPlayerApi.GetPlayerCount();
+                var players = new VRCPlayerApi[count];
+                VRCPlayerApi.GetPlayers(players);
+
+                string[] names = new string[count];
+                for (int i = 0; i < count; i++)
+                {
+                    names[i] = players[i].displayName;
+                }
+
+                return names;
+            }
+
             return members;
         }
 
-        public override void _Start()
+        protected override void OnManagedStart()
         {
             localPlayer = Networking.LocalPlayer;
             isLocalInRole = IsMember(localPlayer.displayName);
@@ -108,7 +122,7 @@ namespace PermissionSystem
         {
             isLocalInRole = IsMember(localPlayer.displayName);
 
-            PermissionsUpdate();
+            NotifyPermissionsUpdated();
         }
 
 

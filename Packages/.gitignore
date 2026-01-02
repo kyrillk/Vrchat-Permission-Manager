@@ -2,8 +2,5 @@
 !com.vrchat.core.*
 
 # Change this to match your new package name
-<<<<<<< HEAD
 !com.kyrillk.permission-manager
-=======
-!com.vrchat.demo-template 
->>>>>>> a167f881a27448c4e4013921ed1ce8d1b8f2292a
+com.kyrillk.permission-manager/todo.txt

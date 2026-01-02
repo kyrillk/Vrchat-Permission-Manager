@@ -17,26 +17,11 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.textmeshpro": "3.0.6",
         "com.vrclinking.vrclinking-sdk": "0.1.4"
       }
     },
     "com.llealloo.audiolink": {
       "version": "file:com.llealloo.audiolink",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
-    "com.udonvr.disbridge": {
-      "version": "file:com.udonvr.disbridge",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.textmeshpro": "3.0.6"
-      }
-    },
-    "com.udonvr.disbridge.plugin.protv": {
-      "version": "file:com.udonvr.disbridge.plugin.protv",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

@@ -13,13 +13,13 @@ namespace PermissionSystem.UI
         [SerializeField] private string roleName;
         private Role addingRole;
         [SerializeField] private PlayerEntry roleAssignMenu;
-        protected override string Prefix => "RoleHandler " + (addingRole != null ? $"({addingRole.permissionName})" : "");
+        protected override string LogPrefix => "RoleHandler " + (addingRole != null ? $"({addingRole.permissionName})" : "");
         private bool isInRole = false;
         protected override void OnPermissionGranted()
         {
             if (addingRole == null || roleAssignMenu == null)
             {
-                logWarning("RoleHandler is not properly set up.");
+                LogWarning("RoleHandler is not properly set up.");
                 return;
             }
             var player = roleAssignMenu.getPlayer();
@@ -37,7 +37,7 @@ namespace PermissionSystem.UI
         {
             if (addingRole == null || roleAssignMenu == null)
             {
-                logWarning("RoleHandler is not properly set up.");
+                LogWarning("RoleHandler is not properly set up.");
                 return;
             } 
             isInRole = addingRole.IsMember(roleAssignMenu.getPlayer().displayName);
@@ -47,7 +47,7 @@ namespace PermissionSystem.UI
         {
             if (addingRole == null)
             {
-                logWarning("RoleHandler is not properly set up.");
+                LogWarning("RoleHandler is not properly set up.");
                 return;
             }
             addingRole.AddUpdateListener(this); // instance method call
@@ -59,10 +59,10 @@ namespace PermissionSystem.UI
             addingRole = manager.GetRoleByName(roleName);
             if (addingRole == null)
             {
-                logWarning("RoleHandler could not find role: " + roleName);
+                LogWarning("RoleHandler could not find role: " + roleName);
                 return;
             }
-            logInfo("Setting up RoleHandler for role: " + roleName);
+            LogInfo("Setting up RoleHandler for role: " + roleName);
             addToListeners();
             updateRoleStatus();
         }

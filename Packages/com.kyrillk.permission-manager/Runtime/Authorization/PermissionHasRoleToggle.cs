@@ -2,50 +2,75 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
-
+using PermissionSystem.Core;
 
 namespace PermissionSystem
 {
     /// <summary>
-    /// Toggles GameObjects based on whether the local player has the required role.
-    /// Enables specified GameObjects if the player has the role, disables others.
+    /// Toggles GameObjects based on whether the local player has the required permissions.
+    /// Enables specified GameObjects if the player has the permission, disables others.
+    /// Extends PermissionAwareBehaviour to check permissions and react to permission changes.
     /// </summary>  
 
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class PermissionHasRoleToggle : PermissionContainerBase
+    public class PermissionHasRoleToggle : PermissionAwareBehaviour
     {
+        [Header("Toggle Settings")]
+        [Tooltip("GameObjects to enable when the player has the required permissions")]
         [SerializeField] private GameObject[] EnabledWhenHasRole;
+        
+        [Tooltip("GameObjects to disable when the player has the required permissions")]
         [SerializeField] private GameObject[] DisabledWhenHasRole;
-        public override void _Start()
+
+        protected override void OnManagedStart()
         {
-            foreach (PermissionContainer RequiredMembership in RequiredMembership)
+            // Register this component to receive updates when permissions change
+            if (requiredPermissions != null)
             {
-                RequiredMembership.AddUpdateListener(this);
+                foreach (PermissionContainerBase permission in requiredPermissions)
+                {
+                    if (permission != null)
+                    {
+                        permission.AddUpdateListener(this);
+                    }
+                }
             }
-            updateObjects();
+            
+            UpdateObjects();
         }
 
-        public override void PermissionsUpdate()
+        public override void OnPermissionsUpdated()
         {
-            updateObjects();
+            UpdateObjects();
         }
 
-        private void updateObjects()
+        private void UpdateObjects()
         {
             VRCPlayerApi localPlayer = Networking.LocalPlayer;
             if (localPlayer == null) return;
 
-            bool hasPermission = HasRequiredPermission(localPlayer);
+            bool hasPermission = HasPermission(localPlayer);
 
-            foreach (GameObject toEnabledWhenHasRole in EnabledWhenHasRole)
+            if (EnabledWhenHasRole != null)
             {
-                toEnabledWhenHasRole.SetActive(hasPermission);
+                foreach (GameObject toEnabledWhenHasRole in EnabledWhenHasRole)
+                {
+                    if (toEnabledWhenHasRole != null)
+                    {
+                        toEnabledWhenHasRole.SetActive(hasPermission);
+                    }
+                }
             }
 
-            foreach (GameObject toDisabledWhenHasRole in DisabledWhenHasRole)
+            if (DisabledWhenHasRole != null)
             {
-                toDisabledWhenHasRole.SetActive(!hasPermission);
+                foreach (GameObject toDisabledWhenHasRole in DisabledWhenHasRole)
+                {
+                    if (toDisabledWhenHasRole != null)
+                    {
+                        toDisabledWhenHasRole.SetActive(!hasPermission);
+                    }
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using PermissionSystem.Loader;
-
+using PermissionSystem.Core;
 
 namespace PermissionSystem 
 {
@@ -12,23 +12,23 @@ namespace PermissionSystem
     {
         [SerializeField] public Role[] Roles;
         [SerializeField] public PermissionGroup[] Groups;
-        [HideInInspector]  public PermissionContainer[] Permissions;
-        [SerializeField] public PermissionContainerBase[] AllContainers;
+        [HideInInspector]  public PermissionContainerBase[] Permissions;
+        [SerializeField] public ManagedBehaviour[] AllContainers;
         [SerializeField] private PermissionLoader permissionLoader;
     
         void Start()
         {
             Permissions = Utils.mergePermissionContainerBaseArrays(Roles, Groups);
 
-            foreach (PermissionContainer permission in Permissions)
+            foreach (PermissionContainerBase permission in Permissions)
             {
                 permission.manager = this;
-                permission.preStart();
+                permission.PreStart();
             }
-            foreach (PermissionContainerBase container in AllContainers)
+            foreach (ManagedBehaviour container in AllContainers)
             {
                 container.SetManager(this);
-                container.preStart();
+                container.PreStart();
             }
             if (permissionLoader != null)
             {
@@ -67,9 +67,9 @@ namespace PermissionSystem
             return null;
         }
 
-        public PermissionContainer GetPermissionByName(string permissionName)
+       public PermissionContainerBase GetPermissionByName(string permissionName)
         {
-            foreach (PermissionContainer permission in Permissions)
+            foreach (PermissionContainerBase permission in Permissions)
             {
                 if (permission != null)
                 {

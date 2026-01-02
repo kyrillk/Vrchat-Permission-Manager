@@ -25,7 +25,7 @@ namespace PermissionSystem
         
         [UdonSynced] private bool IsAcive = false;
 
-        public override void _Start()
+        protected override void OnManagedStart()
         {
             IsAcive = Start;
             foreach (GameObject target in Targets)
@@ -47,7 +47,7 @@ namespace PermissionSystem
             }
             if (IsGlobal)
             {
-                Sync();
+                SyncBehaviour();
             }
         }
 

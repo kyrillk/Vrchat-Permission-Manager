@@ -16,6 +16,7 @@ namespace PermissionSystem.Loader
         private const int maxRetries = 3;
         private const float retryDelay = 5.0f;
 
+
         public override void RequestDataLoad()
         {
             if (downloader == null)
@@ -27,8 +28,22 @@ namespace PermissionSystem.Loader
                     return;
                 }
             }
-
             LoadData();
+        }
+
+        public override void ChangeUrl(VRCUrl url)
+        {
+            if (downloader == null)
+            {
+                downloader = GetComponent<VrcLinkingDownloader>();
+                if (downloader == null)
+                {
+                    LogError("No VrcLinkingDownloader found on the same GameObject!");
+                    return;
+                }
+            }
+
+            downloader.mainUrl = url;
         }
 
         public void LoadData()

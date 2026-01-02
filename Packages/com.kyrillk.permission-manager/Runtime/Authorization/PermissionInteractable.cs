@@ -13,22 +13,30 @@ namespace PermissionSystem
     /// and calls OnPermissionGranted or OnPermissionDenied accordingly.
     /// </summary>
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public abstract class PermissionInteractable : PermissionContainerBase
+    public abstract class PermissionInteractable : Core.PermissionAwareBehaviour
     {
-        override protected string Prefix => "PermissionInteractable";
+        override protected string LogPrefix => "PermissionInteractable";
+        
+        /// <summary>
+        /// Called when permissions are updated. Override to react to permission changes.
+        /// </summary>
+        public override void OnPermissionsUpdated()
+        {
+            // Base implementation does nothing, derived classes can override
+        }
+        
         /// <summary>
         /// Called when a player interacts with this object.
         /// Automatically checks permissions and delegates to OnPermissionGranted or OnPermissionDenied.
         /// </summary>
         public override void Interact()
         {
-            bool hasAny = false;
             VRCPlayerApi player = Networking.LocalPlayer;
 
-            if (manager == null || RequiredMembership == null)
+            if (manager == null || requiredPermissions == null)
                 return;
                 
-            if (!HasRequiredPermission(player))
+            if (!HasPermission(player))
             {
                 OnPermissionDenied(player);
                 return;
@@ -47,6 +55,8 @@ namespace PermissionSystem
             //logger.Log("Permission granted for " + player.displayName);
             OnPermissionGranted();
         }
+        
+        
         
         /// <summary>
         /// Implement this method to define what happens when permission is granted.

@@ -1,11 +1,12 @@
 {
   "name": "com.kyrillk.permission-manager",
   "displayName": "PermissionManager",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A system to manage permission with VRC Linking",
   "gitDependencies": {},
   "vpmDependencies": {
-    "com.vrchat.worlds": "3.10.1"
+    "com.vrchat.worlds": "3.10.1",
+    "com.vrclinking.vrclinking-sdk": "0.1.4"
   },
   "author": {
     "name": "kyrillk",
@@ -15,7 +16,6 @@
   "legacyFiles": {},
   "localPath": "C:\\Users\\kyril\\Desktop\\Unity\\Testworld\\Packages\\com.kyrillk.permission-manager",
   "dependencies": {
-    "com.unity.textmeshpro": "3.0.6",
     "com.vrclinking.vrclinking-sdk": "0.1.4"
   }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using VRC.Economy;
 using VRC.SDK3.Data;
 using VRC.SDKBase;
+using PermissionSystem.Core;
 
 namespace PermissionSystem
 {
@@ -13,7 +14,7 @@ namespace PermissionSystem
     /// </summary>
 
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class FloatingOverheadBuyIndicator : PermissionContainerBase
+    public class FloatingOverheadBuyIndicator : PermissionAwareBehaviour
     {
         [Tooltip("The tag to assign to players when they join.")]
         public string playerTag = "Player";
@@ -36,7 +37,7 @@ namespace PermissionSystem
         public int maxUpdatesPerFrame = 10;
         private int _nextIndexToUpdate;
         private int _updatesThisFrame;
-        protected override string Prefix => "FloatingOverheadBuyIndicator";
+        protected override string LogPrefix => "FloatingOverheadBuyIndicator";
 
         // We'll use this to keep track of which players have an indicator that should be shown above their head. We store the player id as the key and the indicator as the value.
         private DataDictionary _playerIndicatorDataDictionary;
@@ -46,16 +47,16 @@ namespace PermissionSystem
             _playerIndicatorDataDictionary = new DataDictionary();
         }
 
-        public override void _Start()
+        protected override void OnManagedStart()
         {
-            if (RequiredMembership == null || RequiredMembership.Length == 0)
+            if (requiredPermissions == null || requiredPermissions.Length == 0)
             {
                 Debug.LogWarning("FloatingOverheadBuyIndicator: No required membership set. The indicator will be shown for all players.");
                 return;
             }
             else
             {
-                foreach (PermissionContainer membership in RequiredMembership)
+                foreach (PermissionContainerBase membership in requiredPermissions)
                 {
                     membership.AddUpdateListener(this);
                 }
@@ -64,7 +65,7 @@ namespace PermissionSystem
             UpdatePlayerTag();
         }
 
-        public override void PermissionsUpdate()
+        public override void OnPermissionsUpdated()
         {
             UpdatePlayerTag();
         }
@@ -77,7 +78,7 @@ namespace PermissionSystem
             if (!showIndicatorAboveLocalPlayer && player.isLocal || !showIndicatorAboveAllPlayers) return;
 
             // Check if player has any of the required permissions
-            if (!HasRequiredPermission(player))
+            if (!HasPermission(player))
             {
                 return;
             }
@@ -116,7 +117,7 @@ namespace PermissionSystem
                 }
 
                 // Check if player has required permission
-                if (HasRequiredPermission(player))
+                if (HasPermission(player))
                 {
                     GameObject indicatorObject = null;
                     // Add indicator if they don't have one

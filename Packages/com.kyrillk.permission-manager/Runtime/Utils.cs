@@ -2,6 +2,7 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+using PermissionSystem.Core;
 
 namespace PermissionSystem
 {
@@ -150,12 +151,12 @@ namespace PermissionSystem
             return false;
         }
 
-        public static PermissionContainer[] mergePermissionContainerBaseArrays(PermissionContainer[] array1, PermissionContainer[] array2)
+        public static PermissionContainerBase[] mergePermissionContainerBaseArrays(PermissionContainerBase[] array1, PermissionContainerBase[] array2)
         {
             if (array1 == null || array1.Length == 0) return array2;
             if (array2 == null || array2.Length == 0) return array1;
 
-            PermissionContainer[] mergedArray = new PermissionContainer[array1.Length + array2.Length];
+            PermissionContainerBase[] mergedArray = new PermissionContainerBase[array1.Length + array2.Length];
             int index = 0;
 
             for (int i = 0; i < array1.Length; i++)
@@ -171,6 +172,56 @@ namespace PermissionSystem
             }
 
             return mergedArray;
+        }
+        
+        public static ManagedBehaviour[] AddToManagedBehaviourArray(ManagedBehaviour[] array, ManagedBehaviour value)
+        {
+            ManagedBehaviour[] newArray;
+            if (array == null)
+            {
+                newArray = new ManagedBehaviour[1];
+                newArray[0] = value;
+            }
+            else
+            {
+                newArray = new ManagedBehaviour[array.Length + 1];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    newArray[i] = array[i];
+                }
+                newArray[array.Length] = value;
+            }
+            return newArray;
+        }
+
+        public static ManagedBehaviour[] RemoveManagedBehaviourArray(ManagedBehaviour[] array, ManagedBehaviour value)
+        {
+            if (array == null || array.Length == 0) return array;
+
+            int removeIndex = -1;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == value)
+                {
+                    removeIndex = i;
+                    break;
+                }
+            }
+
+            if (removeIndex == -1) return array;
+
+            ManagedBehaviour[] newArray = new ManagedBehaviour[array.Length - 1];
+            int newIndex = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i != removeIndex)
+                {
+                    newArray[newIndex] = array[i];
+                    newIndex++;
+                }
+            }
+
+            return newArray;
         }
     }
 }

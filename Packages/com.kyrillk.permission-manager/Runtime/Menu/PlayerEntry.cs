@@ -4,11 +4,12 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using TMPro;
+using PermissionSystem.Core;
 
 namespace PermissionSystem.UI
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class PlayerEntry : PermissionContainerBase
+    public class PlayerEntry : ManagedBehaviour
     {
         private VRCPlayerApi player;
         
@@ -33,7 +34,7 @@ namespace PermissionSystem.UI
             }
         }
 
-        public override void PermissionsUpdate(){
+        public override void OnPermissionsUpdated(){
             updateRolesStatus();
         }
 

@@ -3,14 +3,8 @@
     "com.vrchat.core.vpm-resolver": {
       "version": "0.1.29"
     },
-    "com.udonvr.disbridge": {
-      "version": "3.0.0-beta.56"
-    },
     "dev.architech.protv": {
       "version": "3.0.0-beta.29.4"
-    },
-    "com.udonvr.disbridge.plugin.protv": {
-      "version": "1.2.0"
     },
     "com.vrchat.base": {
       "version": "3.10.1"
@@ -50,10 +44,6 @@
       "version": "0.1.0-alpha.8",
       "dependencies": {}
     },
-    "com.udonvr.disbridge": {
-      "version": "3.0.0-beta.56",
-      "dependencies": {}
-    },
     "dev.architech.protv": {
       "version": "3.0.0-beta.29.4",
       "dependencies": {
@@ -66,10 +56,6 @@
       "dependencies": {
         "com.vrchat.worlds": "^3.4"
       }
-    },
-    "com.udonvr.disbridge.plugin.protv": {
-      "version": "1.2.0",
-      "dependencies": {}
     },
     "com.vrchat.base": {
       "version": "3.10.1",
