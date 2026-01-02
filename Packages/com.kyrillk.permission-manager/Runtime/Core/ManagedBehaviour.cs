@@ -1,6 +1,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRC.SDK3.Data;
 
 namespace PermissionSystem.Core
 {
@@ -33,7 +34,9 @@ namespace PermissionSystem.Core
         {
             OnManagedStart();
         }
-        
+
+        public virtual void OnDataLoaded(VRC.SDK3.Data.DataDictionary data){}
+
         /// <summary>
         /// Override this for custom initialization logic. Called after manager is set.
         /// </summary>

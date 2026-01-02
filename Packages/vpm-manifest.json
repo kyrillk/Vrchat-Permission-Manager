@@ -21,11 +21,11 @@
     "chirp.reava.portableworldmenu": {
       "version": "0.4.0-pre.1"
     },
-    "com.vrclinking.vrclinking-sdk": {
-      "version": "0.1.4"
-    },
     "dev.architech.protv": {
       "version": "3.0.0-beta.29.4"
+    },
+    "com.vrclinking.vrclinking-sdk": {
+      "version": "0.1.4"
     }
   },
   "locked": {
@@ -82,16 +82,16 @@
         "com.vrchat.worlds": ">=3.7.4"
       }
     },
-    "com.vrclinking.vrclinking-sdk": {
-      "version": "0.1.4",
-      "dependencies": {}
-    },
     "dev.architech.protv": {
       "version": "3.0.0-beta.29.4",
       "dependencies": {
         "com.vrchat.worlds": "^3.4",
         "dev.architech.sdk": ">=0.21.3 <1"
       }
+    },
+    "com.vrclinking.vrclinking-sdk": {
+      "version": "0.1.4",
+      "dependencies": {}
     }
   }
 }

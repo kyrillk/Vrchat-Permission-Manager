@@ -2,6 +2,7 @@
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+using VRC.SDK3.Data;
 
 namespace PermissionSystem
 {
@@ -19,6 +20,16 @@ namespace PermissionSystem
         [Tooltip("If true, all players are automatically considered members of this role")]
         [SerializeField] private bool assignDefault = false;
 
+        [Header("Data Loading Configuration")]
+        [Tooltip("Key in JSON data that contains role information (e.g., 'GuildUsers')")]
+        public string rolesDataKey = "GuildUsers";
+        
+        [Tooltip("JSON role name to map from external data sources. Leave empty to skip loading.")]
+        public string jsonRoleName = "";
+
+        [Tooltip("If true, adds all users from the JSON data. If false, only adds the local player.")]
+        public bool loadAllUsers = false;
+
         //[SerializeField] private TagSettings tag;
 
         private VRCPlayerApi localPlayer;
@@ -26,6 +37,7 @@ namespace PermissionSystem
         
         [Tooltip("Array of player display names who are members of this role")]
         [SerializeField, UdonSynced] private string[] members;
+
 
     
         /// <summary>
@@ -125,8 +137,86 @@ namespace PermissionSystem
             NotifyPermissionsUpdated();
         }
 
+        /// <summary>
+        /// Called when external data has been loaded. Loads and applies member data.
+        /// </summary>
+        public override void OnDataLoaded(DataDictionary data)
+        {
+            // If jsonRoleName is not configured, skip loading
+            if (string.IsNullOrEmpty(jsonRoleName))
+            {
+                return;
+            }
 
+            // Check if rolesDataKey exists in the data
+            if (!data.ContainsKey(rolesDataKey))
+            {
+                LogWarning($"Data does not contain key: '{rolesDataKey}' for role '{permissionName}'");
+                return;
+            }
 
+            DataToken rolesToken = data[rolesDataKey];
+            if (rolesToken.TokenType != TokenType.DataDictionary)
+            {
+                LogWarning($"'{rolesDataKey}' is not a dictionary for role '{permissionName}'");
+                return;
+            }
+
+            DataDictionary rolesData = rolesToken.DataDictionary;
+
+            // Check if this specific role exists in the rolesData
+            if (!rolesData.ContainsKey(jsonRoleName))
+            {
+                LogWarning($"Role '{jsonRoleName}' not found in '{rolesDataKey}' for role '{permissionName}'");
+                return;
+            }
+
+            DataToken usersToken = rolesData[jsonRoleName];
+            if (usersToken.TokenType != TokenType.DataList)
+            {
+                LogWarning($"Role '{jsonRoleName}' does not contain a user list for role '{permissionName}'");
+                return;
+            }
+
+            DataList usersList = usersToken.DataList;
+            
+            // Apply members based on loadAllUsers setting
+            if (loadAllUsers)
+            {
+                // Add all users from the list
+                for (int i = 0; i < usersList.Count; i++)
+                {
+                    if (usersList[i].TokenType == TokenType.String)
+                    {
+                        string userName = usersList[i].String;
+                        if (!string.IsNullOrEmpty(userName))
+                        {
+                            addMember(userName);
+                        }
+                    }
+                }
+                LogInfo($"Applied {usersList.Count} users from '{rolesDataKey}.{jsonRoleName}' to role '{permissionName}'");
+            }
+            else
+            {
+                // Only add the local player if they're in the list
+                string localPlayerName = Networking.LocalPlayer.displayName;
+                for (int i = 0; i < usersList.Count; i++)
+                {
+                    if (usersList[i].TokenType == TokenType.String)
+                    {
+                        string userName = usersList[i].String;
+                        if (userName == localPlayerName)
+                        {
+                            addMember(userName);
+                            LogInfo($"Applied local player to role '{permissionName}' from '{rolesDataKey}.{jsonRoleName}'");
+                            return;
+                        }
+                    }
+                }
+                LogInfo($"Local player not found in '{rolesDataKey}.{jsonRoleName}' for role '{permissionName}'");
+            }
+        }
 
     }
 }

@@ -60,15 +60,17 @@ namespace PermissionSystem.Loader
                 if (retryCount < maxRetries)
                 {
                     retryCount++;
-                    Debug.Log($"Data not available yet. Retrying {retryCount}/{maxRetries} in {retryDelay} seconds...");
+                    LogDebug($"Data not available yet. Retrying {retryCount}/{maxRetries} in {retryDelay} seconds...");
                     SendCustomEventDelayedSeconds(nameof(LoadData), retryDelay, VRC.Udon.Common.Enums.EventTiming.LateUpdate);
                 }
                 else
                 {
-                    Debug.LogError("Failed to load data after multiple attempts.");
+                    LogError("Failed to load data after multiple attempts.");
                 }
                 return;
             }
+            
+            // LoadRolesFromData now handles everything including NotifyDataLoaded
             LoadRolesFromData(data);
         }
     }

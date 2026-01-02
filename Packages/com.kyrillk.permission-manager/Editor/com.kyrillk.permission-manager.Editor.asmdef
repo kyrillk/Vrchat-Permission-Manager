@@ -6,9 +6,15 @@
         "VRC.SDK3.Editor",
         "VRC.SDKBase",
         "VRC.SDKBase.Editor",
-        "PermissionManager.Runtime"
+        "PermissionManager.Runtime",
+        "UdonSharp.Runtime",
+        "VRCLinking.Runtime",
+        "VRCLinkingSDK.Editor",
+        "VRCLinkingAPI"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -19,12 +19,7 @@ namespace PermissionSystem
         void Start()
         {
             Permissions = Utils.mergePermissionContainerBaseArrays(Roles, Groups);
-
-            foreach (PermissionContainerBase permission in Permissions)
-            {
-                permission.manager = this;
-                permission.PreStart();
-            }
+            
             foreach (ManagedBehaviour container in AllContainers)
             {
                 container.SetManager(this);
