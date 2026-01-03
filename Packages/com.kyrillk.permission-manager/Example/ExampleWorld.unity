@@ -1237,7 +1237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4483337496803729363, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0010910034
+      value: -0.0010147095
       objectReference: {fileID: 0}
     - target: {fileID: 4965256845171395720, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
       propertyPath: m_Name
@@ -1271,6 +1271,22 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7507984163813594771, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
+    - target: {fileID: 7507984163813594771, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
+      propertyPath: assignableRoles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7507984163813594771, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
+      propertyPath: assignableRoles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1535077109}
+    - target: {fileID: 7507984163813594771, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
+      propertyPath: roleAssignPermissions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7507984163813594771, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
+      propertyPath: roleAssignPermissions.Array.data[0]
+      value: 
+      objectReference: {fileID: 862991117}
     - target: {fileID: 7903348822779772633, guid: 1612af195b208f240a05e276cfde09b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

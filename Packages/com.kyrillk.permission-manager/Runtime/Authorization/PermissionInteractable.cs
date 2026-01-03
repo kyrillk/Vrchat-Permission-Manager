@@ -32,12 +32,20 @@ namespace PermissionSystem
         public override void Interact()
         {
             VRCPlayerApi player = Networking.LocalPlayer;
-            if (manager == null || requiredPermissions == null)
+            
+            // If no permissions required, allow everyone
+            if (requiredPermissions == null || requiredPermissions.Length == 0)
             {
-                LogError("Permission manager is NULL");
+                OnPermissionGranted(player);
                 return;
             }
-
+            
+            // Manager is required for permission checks
+            if (manager == null)
+            {
+                LogError("Permission manager is NULL but permissions are required");
+                return;
+            }
 
             
             if (!HasPermission(player))

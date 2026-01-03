@@ -238,8 +238,9 @@ MonoBehaviour:
   playerListContainer: {fileID: 4483337496803729363}
   playerRowPrefab: {fileID: 8259910167676386298, guid: fd080f0439f9fd94eb1e401443e0cb8c, type: 3}
   roleButtonPrefab: {fileID: 4244304607004570756, guid: dbd31fe48e7f4b641b966c327ca0937a, type: 3}
-  assignableRoles:
-  - {fileID: 0}
+  globalAssignPermissions: []
+  assignableRoles: []
+  roleAssignPermissions: []
 --- !u!222 &8665003491833447395
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -423,8 +424,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8748996035587782982}
   m_HandleRect: {fileID: 3098148021139589153}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999839
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -464,7 +465,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000076293945}
+  m_AnchoredPosition: {x: 0, y: -0.0010604858}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3396731732167037649
