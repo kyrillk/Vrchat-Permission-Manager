@@ -64,6 +64,14 @@ namespace PermissionSystem.Core
         {
             requiredPermissions = permissions;
         }
+        
+        /// <summary>
+        /// Set a single required permission container
+        /// </summary>
+        public void SetRequiredPermission(PermissionContainerBase permission)
+        {
+            requiredPermissions = new PermissionContainerBase[] { permission };
+        }
     }
 }
 

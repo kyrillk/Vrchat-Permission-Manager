@@ -32,10 +32,14 @@ namespace PermissionSystem
         public override void Interact()
         {
             VRCPlayerApi player = Networking.LocalPlayer;
-
             if (manager == null || requiredPermissions == null)
+            {
+                LogError("Permission manager is NULL");
                 return;
-                
+            }
+
+
+            
             if (!HasPermission(player))
             {
                 OnPermissionDenied(player);
@@ -52,7 +56,7 @@ namespace PermissionSystem
         /// <param name="player">The player who interacted</param>
         protected virtual void OnPermissionGranted(VRCPlayerApi player)
         {
-            //logger.Log("Permission granted for " + player.displayName);
+            LogInfo("Permission granted for " + player.displayName);
             OnPermissionGranted();
         }
         
@@ -71,7 +75,7 @@ namespace PermissionSystem
         /// <param name="player">The player who was denied</param>
         protected virtual void OnPermissionDenied(VRCPlayerApi player)
         {
-            //logger.Log("Permission denied for " + player.displayName);
+            LogInfo("Permission denied for " + player.displayName);
         }
     }
 }
