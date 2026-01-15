@@ -1,5 +1,6 @@
 using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 
 namespace PermissionSystem.Core
 {
@@ -21,7 +22,15 @@ namespace PermissionSystem.Core
         /// Check if a specific player name is a member of this container
         /// </summary>
         public abstract bool IsMember(string playerName);
-        
+
+        /// <summary>
+        /// Check if a specific VRCPlayerApi is a member of this container
+        /// </summary>
+        public virtual bool IsMember(VRCPlayerApi player)
+        {
+            return IsMember(player.displayName);
+        }
+
         /// <summary>
         /// Check if the local player is a member of this container
         /// </summary>

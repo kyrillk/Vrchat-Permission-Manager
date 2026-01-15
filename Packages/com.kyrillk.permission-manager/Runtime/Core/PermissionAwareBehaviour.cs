@@ -29,6 +29,12 @@ namespace PermissionSystem.Core
 
             // Check if player is a member of any required permission container
             string playerName = player.displayName;
+            
+            return HasPermission(playerName);
+        }
+
+        protected bool HasPermission(string playerName)
+        {
             foreach (PermissionContainerBase permission in requiredPermissions)
             {
                 if (permission != null && permission.IsMember(playerName))

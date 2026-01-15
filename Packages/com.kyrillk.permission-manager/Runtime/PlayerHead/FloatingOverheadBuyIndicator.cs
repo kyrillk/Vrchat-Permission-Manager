@@ -1,226 +1,350 @@
 ﻿using UdonSharp;
 using UnityEngine;
-using VRC.Economy;
-using VRC.SDK3.Data;
 using VRC.SDKBase;
-using PermissionSystem.Core;
+using TMPro;
+using UnityEngine.UI;
 
 namespace PermissionSystem
 {
     /// <summary>
-    /// Displays floating indicators above players' heads based on permission membership.
-    /// Extends PermissionContainerBase to use permission checking for showing indicators.
-    /// Only players who are members of the required permissions will have an indicator displayed.
+    /// Displays a floating indicator above a player's head.
+    /// Uses VRChat's Player Object system - each instance is automatically assigned to a player.
+    /// The owner player is determined via Networking.GetOwner().
+    /// External scripts can set the icon image and color.
     /// </summary>
-
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class FloatingOverheadBuyIndicator : PermissionAwareBehaviour
+    public class FloatingOverheadBuyIndicator : UdonSharpBehaviour
     {
-        [Tooltip("The tag to assign to players when they join.")]
-        public string playerTag = "Player";
+        [Header("UI Components")]
+        [Tooltip("TextMeshPro component for player name display")]
+        [SerializeField] private TextMeshProUGUI playerNameText;
 
-        [Tooltip("The indicator GameObject prefab to float above players' heads. Avoid adding colliders to prevent interaction issues.")]
-        public GameObject overheadIndicatorPrefab;
+        [Tooltip("Image component for the tag icon")]
+        public Image tagIcon;
 
-        [Tooltip("How far above the players head you want the Indicator to float.")]
+        [Header("Position Settings")]
+        [Tooltip("How far above the player's head the indicator floats")]
         public float heightAboveHead = 1f;
 
-        [Tooltip("Whether or not you should see an indicator above yourself if you own the product.")]
+        [Header("Visibility Settings")]
+        [Tooltip("Whether the local player can see their own indicator")]
         public bool showIndicatorAboveLocalPlayer = true;
-        
-        [Tooltip("Whether or not you should see an indicator above OtherPlayers.")]
+
+        [Tooltip("Whether indicators are shown above other players")]
         public bool showIndicatorAboveAllPlayers = true;
 
-        [Tooltip("Max amount of indicators to update per frame." +
-                 "This helps performance but can make the indicator look choppy if you set it too low if there are a lot of players in the instance who own the product.")]
-        [Range(1, 100)]
-        public int maxUpdatesPerFrame = 10;
+        [Tooltip("Maximum distance at which the indicator is visible")]
+        public float maxVisibleDistance = 20f;
+
         private int _nextIndexToUpdate;
         private int _updatesThisFrame;
-        protected override string LogPrefix => "FloatingOverheadBuyIndicator";
 
-        // We'll use this to keep track of which players have an indicator that should be shown above their head. We store the player id as the key and the indicator as the value.
-        private DataDictionary _playerIndicatorDataDictionary;
+
+        [Header("Style Settings")]
+        [Tooltip("Current tag style definition")]
+        public TagStyleDefinition tagStyle;
+
+        // The player who owns this indicator (auto-assigned via Player Object system)
+        private VRCPlayerApi _ownerPlayer;
+        private bool _isInitialized;
+        private CanvasGroup _canvasGroup;
 
         private void Start()
         {
-            _playerIndicatorDataDictionary = new DataDictionary();
-        }
-
-        protected override void OnManagedStart()
-        {
-            if (requiredPermissions == null || requiredPermissions.Length == 0)
-            {
-                Debug.LogWarning("FloatingOverheadBuyIndicator: No required membership set. The indicator will be shown for all players.");
-                return;
-            }
-            else
-            {
-                foreach (PermissionContainerBase membership in requiredPermissions)
-                {
-                    membership.AddUpdateListener(this);
-                }
-            }
-
-            UpdatePlayerTag();
-        }
-
-        public override void OnPermissionsUpdated()
-        {
-            UpdatePlayerTag();
-        }
-
-        // When a player joins, add an indicator above them if they have required permissions
-        public override void OnPlayerJoined(VRCPlayerApi player)
-        {
-            if (!Utilities.IsValid(player)) return;
+            // Try to get CanvasGroup for fading, add one if not present
+            _canvasGroup = GetComponent<CanvasGroup>();
             
-            if (!showIndicatorAboveLocalPlayer && player.isLocal || !showIndicatorAboveAllPlayers) return;
+            // Initialize with owner if already assigned
+            InitializeOwner();
+        }
 
-            // Check if player has any of the required permissions
-            if (!HasPermission(player))
+        /// <summary>
+        /// Called when the owner of this object changes (Player Object assignment)
+        /// </summary>
+        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        {
+            InitializeOwner();
+        }
+
+        private void InitializeOwner()
+        {
+            _ownerPlayer = Networking.GetOwner(gameObject);
+            
+            if (!Utilities.IsValid(_ownerPlayer))
             {
+                gameObject.SetActive(false);
                 return;
             }
 
-            // Add the player to the dictionary with an indicator when they join
-            if (!_playerIndicatorDataDictionary.ContainsKey(player.playerId))
+            _isInitialized = true;
+
+            // Set player name
+            if (playerNameText != null)
             {
-                _playerIndicatorDataDictionary.Add(player.playerId, Instantiate(overheadIndicatorPrefab));
+                playerNameText.text = _ownerPlayer.displayName;
             }
+
+            // Apply initial style if set
+            if (tagStyle != null)
+            {
+                ApplyStyle();
+            }
+
+            UpdateVisibilityState();
         }
 
-        public void UpdatePlayerTag()
-        {
-            // Check all players to see if they should have indicators (in case permissions change during the session)
-            var playersCount = new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()];
-            VRCPlayerApi[] players = VRCPlayerApi.GetPlayers(playersCount);
-
-            VRCPlayerApi localPlayer = Networking.LocalPlayer;
-            
-            foreach (VRCPlayerApi player in players)
-            {
-                if (!Utilities.IsValid(player)) continue;
-
-                // Skip local player if disabled
-                if (localPlayer == player && !showIndicatorAboveLocalPlayer)
-                {
-                    RemovePlayerFromDictionaryIfExists(player);
-                    continue;
-                }
-
-                // Skip other players if disabled
-                if (!showIndicatorAboveAllPlayers)
-                {
-                    RemovePlayerFromDictionaryIfExists(player);
-                    continue;
-                }
-
-                // Check if player has required permission
-                if (HasPermission(player))
-                {
-                    GameObject indicatorObject = null;
-                    // Add indicator if they don't have one
-                    if (!_playerIndicatorDataDictionary.ContainsKey(player.playerId))
-                    {
-                        GameObject indicator = Instantiate(overheadIndicatorPrefab);
-                        indicator.SetActive(showIndicatorAboveAllPlayers);
-                        _playerIndicatorDataDictionary.Add(player.playerId, indicator);
-                    }else
-                    {
-                        // Get existing indicator
-                        DataToken value = _playerIndicatorDataDictionary[player.playerId];
-                        if (value.TokenType == TokenType.Reference)
-                        {
-                            indicatorObject = (GameObject)value.Reference;
-                        }
-                    }
-                    // set setting indicatorObject?
-                    //indicatorObject.getComponent<Renderer>().enabled = true;
-                    
-                }
-                else
-                {
-                    // Remove indicator if they no longer have permission
-                    RemovePlayerFromDictionaryIfExists(player);
-                }
-            }
-        }
+        // public override void PostLateUpdate()
+        // {
+        //     if (!_isInitialized || !Utilities.IsValid(_ownerPlayer)) return;
+        //
+        //     // Check visibility conditions
+        //     bool shouldShow = ShouldShowIndicator();
+        //      
+        //     if (!shouldShow)
+        //     {
+        //         if (gameObject.activeSelf)
+        //             gameObject.SetActive(false);
+        //         return;
+        //     }
+        // }
 
         // Running this in PostLateUpdate to make sure the player's position, IK pose and Animator is updated before we try to set the indicator's position.
         public override void PostLateUpdate()
         {
-            if (!showIndicatorAboveAllPlayers) return;
-            DataList keys = _playerIndicatorDataDictionary.GetKeys();
-            // Each key in the dictionary is a player id, so we want to loop through each key and get the value (Indicator object).
+            if (!Utilities.IsValid(_ownerPlayer)) return;
 
-            if (keys.Count == 0) return;
-
-            // If there are more keys than the max updates per frame, we want to limit the amount of updates we do this frame. Otherwise, we'll update all of them.
-            _updatesThisFrame = Mathf.Min(maxUpdatesPerFrame, keys.Count);
-
-            // For performance reasons, we want to spread out the updates over multiple frames. We'll use _updatesThisFrame to keep track of how many updates we want to do this frame.
-            for (int i = 0; i < _updatesThisFrame; i++)
+            // Position above the player's head
+            Vector3 headPos = _ownerPlayer.GetBonePosition(HumanBodyBones.Head);
+            if (headPos.Equals(Vector3.zero))
             {
-                // If we've reached the end of the list, we want to start over from the beginning.
-                if (_nextIndexToUpdate >= keys.Count)
+                // Fallback to player position if head bone not available
+                headPos = _ownerPlayer.GetPosition() + Vector3.up * 1.5f;
+            }
+            transform.position = headPos + Vector3.up * heightAboveHead;
+
+            // Billboard - always face the local player's camera with text readable (not mirrored)
+            VRCPlayerApi localPlayer = Networking.LocalPlayer;
+            if (Utilities.IsValid(localPlayer))
+            {
+                Vector3 cameraPos = localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
+                Vector3 lookDir = transform.position - cameraPos;
+                lookDir.y = 0; // Keep upright
+                if (lookDir.sqrMagnitude > 0.001f)
                 {
-                    _nextIndexToUpdate = 0;
+                    transform.rotation = Quaternion.LookRotation(lookDir);
                 }
-
-                DataToken key = keys[_nextIndexToUpdate];
-
-                if (_playerIndicatorDataDictionary.TryGetValue(key, out DataToken value))
-                {
-                    VRCPlayerApi player = VRCPlayerApi.GetPlayerById(key.Int);
-                    // We want to make sure the player is valid and the token is a reference before we try to use it to avoid possible errors.
-                    if (Utilities.IsValid(player) && value.TokenType == TokenType.Reference)
-                    {
-                        GameObject indicator = (GameObject)value.Reference;
-                        // We also want to make sure the indicator is valid before we try to set it's position.
-                        if (indicator != null)
-                        {
-                            indicator.transform.position = player.GetBonePosition(HumanBodyBones.Head) +
-                                                           Vector3.up * heightAboveHead;
-                        }
-                    }
-                }
-
-                _nextIndexToUpdate++;
             }
         }
 
-        // If the player leaves the instance, we want to remove them from the dictionary if they exist.
+        private bool ShouldShowIndicator()
+        {
+            if (!Utilities.IsValid(_ownerPlayer)) return false;
+
+            VRCPlayerApi localPlayer = Networking.LocalPlayer;
+            if (!Utilities.IsValid(localPlayer)) return false;
+
+            // Check if this is the local player's indicator
+            if (_ownerPlayer.isLocal)
+            {
+                return showIndicatorAboveLocalPlayer;
+            }
+
+            // Check if other player indicators are enabled
+            if (!showIndicatorAboveAllPlayers) return false;
+
+            // Check distance
+            float distance = Vector3.Distance(localPlayer.GetPosition(), _ownerPlayer.GetPosition());
+            if (distance > maxVisibleDistance) return false;
+
+            return true;
+        }
+
+        private void UpdateVisibilityState()
+        {
+            bool shouldShow = ShouldShowIndicator();
+            gameObject.SetActive(shouldShow);
+        }
+
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
-            RemovePlayerFromDictionaryIfExists(player);
-        }
-
-        // We want to make sure we destroy the indicator before removing the player from the dictionary to not leave any lingering objects.
-        private void RemovePlayerFromDictionaryIfExists(VRCPlayerApi player)
-        {
-            if (_playerIndicatorDataDictionary.TryGetValue(player.playerId, out DataToken value))
+            if (Utilities.IsValid(_ownerPlayer) && player.playerId == _ownerPlayer.playerId)
             {
-                if (value.TokenType == TokenType.Reference)
-                {
-                    GameObject indicatorObject = (GameObject)value.Reference;
-
-                    Destroy(indicatorObject);
-                }
-
-                _playerIndicatorDataDictionary.Remove(player.playerId);
+                _isInitialized = false;
+                gameObject.SetActive(false);
             }
         }
 
+        #region Public API - Set Icon and Color
 
-        public void setshowIndicatorAboveAllPlayers(bool value)
+        /// <summary>
+        /// Set the icon sprite displayed on this tag
+        /// </summary>
+        public void SetIcon(Sprite icon)
+        {
+            if (tagIcon != null)
+            {
+                tagIcon.sprite = icon;
+                tagIcon.enabled = icon != null;
+            }
+        }
+
+        /// <summary>
+        /// Set the icon color/tint
+        /// </summary>
+        public void SetIconColor(Color color)
+        {
+            if (tagIcon != null)
+            {
+                tagIcon.color = color;
+            }
+        }
+
+        /// <summary>
+        /// Set both icon and color at once
+        /// </summary>
+        public void SetIconAndColor(Sprite icon, Color color)
+        {
+            SetIcon(icon);
+            SetIconColor(color);
+        }
+
+        /// <summary>
+        /// Set the player name text color
+        /// </summary>
+        public void SetNameColor(Color color)
+        {
+            if (playerNameText != null)
+            {
+                playerNameText.color = color;
+            }
+        }
+
+        /// <summary>
+        /// Set the background color (requires Image component on this GameObject)
+        /// </summary>
+        public void SetBackgroundColor(Color color)
+        {
+            Image background = GetComponent<Image>();
+            if (background != null)
+            {
+                background.color = color;
+            }
+        }
+
+        /// <summary>
+        /// Get the player who owns this indicator
+        /// </summary>
+        public VRCPlayerApi GetOwnerPlayer()
+        {
+            return _ownerPlayer;
+        }
+
+        /// <summary>
+        /// Check if this indicator belongs to the local player
+        /// </summary>
+        public bool IsLocalPlayerIndicator()
+        {
+            return Utilities.IsValid(_ownerPlayer) && _ownerPlayer.isLocal;
+        }
+
+        #endregion
+
+        #region Visibility Settings
+
+        public void SetShowIndicatorAboveAllPlayers(bool value)
         {
             showIndicatorAboveAllPlayers = value;
+            UpdateVisibilityState();
         }
 
-        public void setshowIndicatorAboveLocalPlayer(bool value)
+        public void SetShowIndicatorAboveLocalPlayer(bool value)
         {
             showIndicatorAboveLocalPlayer = value;
+            UpdateVisibilityState();
         }
+
+        public void SetMaxVisibleDistance(float distance)
+        {
+            maxVisibleDistance = distance;
+        }
+        
+
+        #endregion
+
+        #region Tag Style Methods
+
+        /// <summary>
+        /// Set the tag style and update the indicator appearance
+        /// </summary>
+        public void SetTagStyle(TagStyleDefinition newStyle)
+        {
+            tagStyle = newStyle;
+            ApplyStyle();
+        }
+
+        /// <summary>
+        /// Get the current tag style
+        /// </summary>
+        public TagStyleDefinition GetTagStyle()
+        {
+            return tagStyle;
+        }
+
+        /// <summary>
+        /// Apply the current style to the indicator
+        /// </summary>
+        public void ApplyStyle()
+        {
+            if (tagStyle == null) return;
+
+            // Apply icon settings
+            if (tagIcon != null)
+            {
+                if (tagStyle.tagIcon != null)
+                {
+                    tagIcon.sprite = tagStyle.tagIcon;
+                    tagIcon.enabled = true;
+                }
+                tagIcon.color = tagStyle.iconColor;
+                tagIcon.transform.localScale = Vector3.one * tagStyle.iconScale;
+            }
+
+            // Apply text settings
+            if (playerNameText != null)
+            {
+                // playerNameText.fontSize = tagStyle.nameFontSize;
+                playerNameText.color = tagStyle.nameColor;
+                // Note: TMP outline is controlled via material properties or component settings
+                // outlineColor and outlineWidth need to be set through the material if needed
+            }
+
+            // Apply background settings
+            Image background = GetComponent<Image>();
+            if (background != null)
+            {
+                if (tagStyle.backgroundSprite != null)
+                    background.sprite = tagStyle.backgroundSprite;
+                background.color = tagStyle.backgroundColor;
+
+                RectTransform rt = GetComponent<RectTransform>();
+                if (rt != null)
+                    rt.sizeDelta = tagStyle.backgroundSize;
+            }
+
+            // Apply visibility settings from style
+            maxVisibleDistance = tagStyle.maxVisibleDistance;
+        }
+
+        /// <summary>
+        /// Force refresh the style
+        /// </summary>
+        public void RefreshStyle()
+        {
+            ApplyStyle();
+        }
+
+        #endregion
     }
 }
+
+
